@@ -1,34 +1,34 @@
 import {
   LayoutDashboard,
-  Users,         // untuk pelanggan
-  ShoppingCart,  // untuk penjualan
-  Box,           // untuk produk
-  BarChart2,     // untuk laporan
-  Settings,      // untuk pengaturan akun
+  Users, // untuk pelanggan
+  ShoppingCart, // untuk penjualan
+  Box, // untuk produk
+  BarChart2, // untuk laporan
+  Settings, // untuk pengaturan akun
   User,
   LogIn,
   UserPlus,
-} from 'lucide-react'
-import { Link, useLocation } from 'react-router-dom'
+} from "lucide-react";
+import { Link, useLocation } from "react-router-dom";
 
 //menu item, bisa di tambahkan
 const menuItems = [
   { name: 'Dashboard', icon: <LayoutDashboard />, path: '/' },
   { name: 'Produk', icon: <Box />, path: '/produk' },
   { name: 'Pelanggan', icon: <Box />, path: '/Pelanggan' },
+   { name: "Penjualan", icon: <ShoppingCart />, path: "/penjualan" },
   { name: 'Laporan', icon: <BarChart2 />, path: '/laporan' },
 ]
-
 const accountItems = [
-  { name: 'Pengaturan Akun', icon: <Settings />, path: '/akun' },
-  { name: 'Sign In', icon: <LogIn />, path: '/signin' },
-  { name: 'Sign Up', icon: <UserPlus />, path: '/signup' },
-]
+  { name: "Pengaturan Akun", icon: <Settings />, path: "/akun" },
+  { name: "Sign In", icon: <LogIn />, path: "/signin" },
+  { name: "Sign Up", icon: <UserPlus />, path: "/signup" },
+];
 
 const Sidebar = () => {
-  const location = useLocation()
+  const location = useLocation();
 
-  const isActive = (path) => location.pathname === path
+  const isActive = (path) => location.pathname === path;
 
   return (
     <aside className="bg-white w-64 h-screen shadow-lg px-4 py-6 hidden md:block">
@@ -40,8 +40,8 @@ const Sidebar = () => {
             to={item.path}
             className={`flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-purple-100 transition ${
               isActive(item.path)
-                ? 'bg-purple-200 text-purple-800 font-semibold'
-                : 'text-gray-700'
+                ? "bg-purple-200 text-purple-800 font-semibold"
+                : "text-gray-700"
             }`}
           >
             <span className="w-5 h-5">{item.icon}</span>
@@ -58,8 +58,8 @@ const Sidebar = () => {
             to={item.path}
             className={`flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-purple-100 transition ${
               isActive(item.path)
-                ? 'bg-purple-200 text-purple-800 font-semibold'
-                : 'text-gray-700'
+                ? "bg-purple-200 text-purple-800 font-semibold"
+                : "text-gray-700"
             }`}
           >
             <span className="w-5 h-5">{item.icon}</span>
@@ -68,7 +68,7 @@ const Sidebar = () => {
         ))}
       </nav>
     </aside>
-  )
-}
+  );
+};
 
-export default Sidebar
+export default Sidebar;

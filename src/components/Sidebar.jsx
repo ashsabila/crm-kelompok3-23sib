@@ -21,7 +21,6 @@ const menuItems = [
   { name: 'Pelanggan', icon: <Box />, path: '/Pelanggan' },
   { name: "Penjualan", icon: <ShoppingCart />, path: "/penjualan" },
   { name: 'Notifikasi', icon: <Bell />, path: '/notifikasi' },
-  { name: 'Laporan', icon: <BarChart2 />, path: '/laporan' },
   { name: 'Masukan', icon: <MessageSquare />, path: '/feedback' },
   { name: 'Laporan', icon: <BarChart2 />, path: '/laporan' },
   { name: "Layanan Mandiri(FAQ)", icon: <NotebookIcon />, path: "/faq" },

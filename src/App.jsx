@@ -22,10 +22,11 @@ function App() {
       <Route path="/feedback" element={<Feedback/>}/>
       <Route path="/faq" element={<FaqSection />} />
       <Route path="/admin/faq" element={<FaqAdmin />} />
-      </Route>
-      <Route path="/pendaftaran" element={<RegistrationForm/>}/>
       <Route path="notifikasi" element={<Notifikasi />} />
       <Route path="laporan" element={<Laporan />} />
+      </Route>
+      <Route path="/pendaftaran" element={<RegistrationForm/>}/>
+      
     </Routes>
       <WhatsappFloatingButton /> {/* ✅ Tambahkan ini */}
     </>

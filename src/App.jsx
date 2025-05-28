@@ -4,6 +4,7 @@ import Dashboard from './assets/Pages/Dashboard';
 import SalesManagement from './assets/Pages/SalesManagement';
 import FaqSection from './assets/Pages/FaqSection';
 import WhatsappFloatingButton from './assets/Pages/WhatsappFloatingButton'; // ✅ Tambahkan ini
+import FaqAdmin from './assets/Pages/FaqAdmin';
 
 function App() {
   return (
@@ -13,6 +14,7 @@ function App() {
           <Route path="/" element={<Dashboard />} />
           <Route path="/penjualan" element={<SalesManagement />} />
           <Route path="/faq" element={<FaqSection />} />
+          <Route path="/admin/faq" element={<FaqAdmin />} />
         </Route>
       </Routes>
       <WhatsappFloatingButton /> {/* ✅ Tambahkan ini */}

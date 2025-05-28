@@ -10,8 +10,9 @@ import {
   UserPlus,
   MessageSquare,
   NotebookIcon,
-} from "lucide-react";
-import { Link, useLocation,  } from "react-router-dom";
+} from 'lucide-react'
+import { Link, useLocation } from 'react-router-dom'
+import { Bell } from 'lucide-react';
 
 //menu item, bisa di tambahkan
 const menuItems = [
@@ -19,11 +20,13 @@ const menuItems = [
   { name: 'Produk', icon: <Box />, path: '/produk' },
   { name: 'Pelanggan', icon: <Box />, path: '/Pelanggan' },
   { name: "Penjualan", icon: <ShoppingCart />, path: "/penjualan" },
+  { name: 'Notifikasi', icon: <Bell />, path: '/notifikasi' },
+  { name: 'Laporan', icon: <BarChart2 />, path: '/laporan' },
   { name: 'Masukan', icon: <MessageSquare />, path: '/feedback' },
   { name: 'Laporan', icon: <BarChart2 />, path: '/laporan' },
   { name: "Layanan Mandiri(FAQ)", icon: <NotebookIcon />, path: "/faq" },
   { name: "FaqAdmin", icon: <NotebookIcon />, path: "/admin/faq" },
-]
+];
 
 const accountItems = [
   { name: "Pengaturan Akun", icon: <Settings />, path: "/akun" },

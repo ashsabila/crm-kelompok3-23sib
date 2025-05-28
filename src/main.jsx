@@ -1,13 +1,16 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
-// import './index.css' //dikomen agar hasilnya full screen
 import App from './App.jsx'
 import { BrowserRouter } from 'react-router-dom'
+import { SalesProvider } from './context/SalesContext' // ⬅️ Tambahkan ini
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
     <BrowserRouter>
-    <App />
+      <SalesProvider>
+        <App />
+      </SalesProvider>
     </BrowserRouter>
-  </React.StrictMode>,
+  </React.StrictMode>
 )
+

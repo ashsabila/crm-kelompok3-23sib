@@ -10,14 +10,19 @@ import {
   UserPlus,
 } from 'lucide-react'
 import { Link, useLocation } from 'react-router-dom'
+import { Bell } from 'lucide-react';
 
 //menu item, bisa di tambahkan
 const menuItems = [
   { name: 'Dashboard', icon: <LayoutDashboard />, path: '/' },
   { name: 'Produk', icon: <Box />, path: '/produk' },
   { name: 'Pelanggan', icon: <Box />, path: '/Pelanggan' },
+  { name: 'Penjualan', icon: <Box />, path: '/Penjualan' },
+  { name: 'Notifikasi', icon: <Bell />, path: '/notifikasi' },
   { name: 'Laporan', icon: <BarChart2 />, path: '/laporan' },
-]
+];
+
+
 
 const accountItems = [
   { name: 'Pengaturan Akun', icon: <Settings />, path: '/akun' },

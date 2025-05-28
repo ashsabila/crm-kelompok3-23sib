@@ -1,15 +1,42 @@
 import React, { useState } from "react";
 
 const initialCustomers = [
-  { id: 1, name: "Budi Santoso", email: "budi@mail.com", phone: "081234567890", active: true },
-  { id: 2, name: "Siti Aminah", email: "siti@mail.com", phone: "089876543210", active: false },
-  { id: 3, name: "Andi Wijaya", email: "andi@mail.com", phone: "081299988877", active: true },
+  {
+    id: 1,
+    name: "Budi Santoso",
+    email: "budi@mail.com",
+    phone: "081234567890",
+    active: true,
+    birthday: "1990-05-28",
+  },
+  {
+    id: 2,
+    name: "Siti Aminah",
+    email: "siti@mail.com",
+    phone: "089876543210",
+    active: false,
+    birthday: "1992-11-12",
+  },
+  {
+    id: 3,
+    name: "Andi Wijaya",
+    email: "andi@mail.com",
+    phone: "081299988877",
+    active: true,
+    birthday: "1995-05-28",
+  },
 ];
 
 export default function CustomerManagement() {
   const [customers, setCustomers] = useState(initialCustomers);
   const [showForm, setShowForm] = useState(false);
-  const [formData, setFormData] = useState({ name: "", email: "", phone: "", active: true });
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    phone: "",
+    active: true,
+    birthday: "",
+  });
 
   const handleInputChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -20,7 +47,7 @@ export default function CustomerManagement() {
   };
 
   const handleAddCustomer = () => {
-    if (!formData.name || !formData.email || !formData.phone) {
+    if (!formData.name || !formData.email || !formData.phone || !formData.birthday) {
       alert("Semua field wajib diisi!");
       return;
     }
@@ -29,7 +56,13 @@ export default function CustomerManagement() {
       ...formData,
     };
     setCustomers([...customers, newCustomer]);
-    setFormData({ name: "", email: "", phone: "", active: true });
+    setFormData({
+      name: "",
+      email: "",
+      phone: "",
+      active: true,
+      birthday: "",
+    });
     setShowForm(false);
   };
 
@@ -39,9 +72,24 @@ export default function CustomerManagement() {
     }
   };
 
+  const isBirthdayToday = (birthday) => {
+    const today = new Date();
+    const bday = new Date(birthday);
+    return (
+      today.getDate() === bday.getDate() &&
+      today.getMonth() === bday.getMonth()
+    );
+  };
+
+  const birthdayCustomers = customers.filter((cust) =>
+    isBirthdayToday(cust.birthday)
+  );
+
   return (
     <div className="p-6 max-w-5xl mx-auto">
       <h1 className="text-2xl font-semibold mb-4">Management Pelanggan</h1>
+
+      
 
       <button
         onClick={() => setShowForm((prev) => !prev)}
@@ -85,6 +133,16 @@ export default function CustomerManagement() {
               placeholder="Nomor telepon"
             />
           </div>
+          <div className="mb-2">
+            <label className="block font-medium mb-1">Tanggal Lahir</label>
+            <input
+              type="date"
+              name="birthday"
+              value={formData.birthday}
+              onChange={handleInputChange}
+              className="w-full px-3 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-400"
+            />
+          </div>
           <div className="flex items-center mb-4">
             <input
               type="checkbox"
@@ -112,6 +170,7 @@ export default function CustomerManagement() {
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Nama</th>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Email</th>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Telepon</th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Tanggal Lahir</th>
               <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
               <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Aksi</th>
             </tr>
@@ -122,6 +181,7 @@ export default function CustomerManagement() {
                 <td className="px-6 py-4 whitespace-nowrap">{cust.name}</td>
                 <td className="px-6 py-4 whitespace-nowrap">{cust.email}</td>
                 <td className="px-6 py-4 whitespace-nowrap">{cust.phone}</td>
+                <td className="px-6 py-4 whitespace-nowrap">{cust.birthday}</td>
                 <td className="px-6 py-4 whitespace-nowrap text-center">
                   {cust.active ? (
                     <span className="inline-flex px-2 text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
@@ -151,7 +211,7 @@ export default function CustomerManagement() {
             ))}
             {customers.length === 0 && (
               <tr>
-                <td colSpan={5} className="text-center py-4 text-gray-500">
+                <td colSpan={6} className="text-center py-4 text-gray-500">
                   Tidak ada data pelanggan
                 </td>
               </tr>

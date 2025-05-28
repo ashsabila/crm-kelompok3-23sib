@@ -9,6 +9,7 @@ import {
   LogIn,
   UserPlus,
   MessageSquare,
+  NotebookIcon,
 } from "lucide-react";
 import { Link, useLocation,  } from "react-router-dom";
 
@@ -20,7 +21,10 @@ const menuItems = [
   { name: "Penjualan", icon: <ShoppingCart />, path: "/penjualan" },
   { name: 'Masukan', icon: <MessageSquare />, path: '/feedback' },
   { name: 'Laporan', icon: <BarChart2 />, path: '/laporan' },
+  { name: "Layanan Mandiri(FAQ)", icon: <NotebookIcon />, path: "/faq" },
+  { name: "FaqAdmin", icon: <NotebookIcon />, path: "/admin/faq" },
 ]
+
 const accountItems = [
   { name: "Pengaturan Akun", icon: <Settings />, path: "/akun" },
   { name: "Sign In", icon: <LogIn />, path: "/signin" },

@@ -5,20 +5,27 @@ import CustomerManagement from './assets/Pages/CustomerManagement'
 import SalesManagement from './assets/Pages/SalesManagement'
 import RegistrationForm from './assets/Pages/Registration'
 import Feedback from './assets/Pages/Feedback'
+import FaqSection from './assets/Pages/FaqSection';
+import WhatsappFloatingButton from './assets/Pages/WhatsappFloatingButton'; // ✅ Tambahkan ini
+import FaqAdmin from './assets/Pages/FaqAdmin';
 
 function App() {
   return (
-
-    <Routes>
+    <>
+      <Routes>
       <Route element={<MainLayout/>}>
       <Route path="/" element={<Dashboard/>}/>
       <Route path="Pelanggan" element={<CustomerManagement/>}/>
       <Route path="/penjualan" element={<SalesManagement/>}/>
       <Route path="/feedback" element={<Feedback/>}/>
+      <Route path="/faq" element={<FaqSection />} />
+      <Route path="/admin/faq" element={<FaqAdmin />} />
       </Route>
       <Route path="/pendaftaran" element={<RegistrationForm/>}/>
     </Routes>
-  )
+      <WhatsappFloatingButton /> {/* ✅ Tambahkan ini */}
+    </>
+  );
 }
 
-export default App
+export default App;

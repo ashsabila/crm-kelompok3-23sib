@@ -8,15 +8,17 @@ import {
   User,
   LogIn,
   UserPlus,
+  MessageSquare,
 } from "lucide-react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation,  } from "react-router-dom";
 
 //menu item, bisa di tambahkan
 const menuItems = [
   { name: 'Dashboard', icon: <LayoutDashboard />, path: '/' },
   { name: 'Produk', icon: <Box />, path: '/produk' },
   { name: 'Pelanggan', icon: <Box />, path: '/Pelanggan' },
-   { name: "Penjualan", icon: <ShoppingCart />, path: "/penjualan" },
+  { name: "Penjualan", icon: <ShoppingCart />, path: "/penjualan" },
+  { name: 'Masukan', icon: <MessageSquare />, path: '/feedback' },
   { name: 'Laporan', icon: <BarChart2 />, path: '/laporan' },
 ]
 const accountItems = [

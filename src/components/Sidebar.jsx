@@ -12,6 +12,7 @@ import {
   NotebookIcon,
 } from 'lucide-react'
 import { Link, useLocation } from 'react-router-dom'
+import { HelpCircle } from 'lucide-react';
 import { Bell } from 'lucide-react';
 
 //menu item, bisa di tambahkan
@@ -25,6 +26,7 @@ const menuItems = [
   { name: 'Laporan', icon: <BarChart2 />, path: '/laporan' },
   { name: "Layanan Mandiri(FAQ)", icon: <NotebookIcon />, path: "/faq" },
   { name: "FaqAdmin", icon: <NotebookIcon />, path: "/admin/faq" },
+  { name: "Bantuan", icon: <HelpCircle />, path: "/bantuan" },
 ];
 
 const accountItems = [

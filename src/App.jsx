@@ -9,7 +9,9 @@ import FaqSection from './assets/Pages/FaqSection';
 import WhatsappFloatingButton from './assets/Pages/WhatsappFloatingButton'; // ✅ Tambahkan ini
 import FaqAdmin from './assets/Pages/FaqAdmin';
 import Notifikasi from './assets/Pages/Notifikasi'
-import Laporan from './assets/Pages/Laporan';;
+import Laporan from './assets/Pages/Laporan';
+import BookingSchedule from './assets/Pages/BookingSchedule';
+
 
 function App() {
   return (
@@ -24,6 +26,8 @@ function App() {
       <Route path="/admin/faq" element={<FaqAdmin />} />
       <Route path="notifikasi" element={<Notifikasi />} />
       <Route path="laporan" element={<Laporan />} />
+      <Route path="/BookingSchedule" element={<BookingSchedule />} />
+
       </Route>
       <Route path="/pendaftaran" element={<RegistrationForm/>}/>
       

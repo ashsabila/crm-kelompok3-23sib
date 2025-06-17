@@ -10,8 +10,7 @@ import WhatsappFloatingButton from './assets/Pages/WhatsappFloatingButton'; // â
 import FaqAdmin from './assets/Pages/FaqAdmin';
 import Notifikasi from './assets/Pages/Notifikasi'
 import HelpCenter from './assets/Pages/HelpCenter';
-import Laporan from './assets/Pages/Laporan';;
-
+import Laporan from './assets/Pages/Laporan';
 function App() {
   return (
       <>

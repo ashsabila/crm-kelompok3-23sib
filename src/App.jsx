@@ -3,7 +3,7 @@ import MainLayout from './components/MainLayout';
 import Dashboard from './assets/Pages/Dashboard';
 import SalesManagement from './assets/Pages/SalesManagement';
 import FaqSection from './assets/Pages/FaqSection';
-import WhatsappFloatingButton from './assets/Pages/WhatsappFloatingButton'; // ✅ Tambahkan ini
+import WhatsappFloatingButton from './assets/Pages/WhatsappFloatingButton';
 import FaqAdmin from './assets/Pages/FaqAdmin';
 
 function App() {

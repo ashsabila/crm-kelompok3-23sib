@@ -6,11 +6,11 @@ import SalesManagement from './assets/Pages/SalesManagement'
 import RegistrationForm from './assets/Pages/Registration'
 import Feedback from './assets/Pages/Feedback'
 import FaqSection from './assets/Pages/FaqSection';
-import WhatsappFloatingButton from './assets/Pages/WhatsappFloatingButton'; // ✅ Tambahkan ini
+import WhatsappFloatingButton from './assets/Pages/WhatsappFloatingButton';
 import FaqAdmin from './assets/Pages/FaqAdmin';
 import Notifikasi from './assets/Pages/Notifikasi'
 import HelpCenter from './assets/Pages/HelpCenter';
-import Laporan from './assets/Pages/Laporan';
+import Laporan from './assets/Pages/Laporan'
 function App() {
   return (
       <>

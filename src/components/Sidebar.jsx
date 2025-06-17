@@ -13,6 +13,7 @@ import {
   BookImageIcon,
 } from 'lucide-react'
 import { Link, useLocation } from 'react-router-dom'
+import { HelpCircle } from 'lucide-react';
 import { Bell } from 'lucide-react';
 
 //menu item, bisa di tambahkan
@@ -28,6 +29,7 @@ const menuItems = [
   { name: "FaqAdmin", icon: <NotebookIcon />, path: "/admin/faq" },
   { name: "Booking and Schedule", icon: <BookImageIcon />, path: "/BookingSchedule" },
 
+  { name: "Bantuan", icon: <HelpCircle />, path: "/bantuan" },
 ];
 
 const accountItems = [

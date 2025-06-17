@@ -28,7 +28,6 @@ const menuItems = [
   { name: "Layanan Mandiri(FAQ)", icon: <NotebookIcon />, path: "/faq" },
   { name: "FaqAdmin", icon: <NotebookIcon />, path: "/admin/faq" },
   { name: "Booking and Schedule", icon: <BookImageIcon />, path: "/BookingSchedule" },
-
   { name: "Bantuan", icon: <HelpCircle />, path: "/bantuan" },
 ];
 

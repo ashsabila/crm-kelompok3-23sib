@@ -8,35 +8,33 @@ import Feedback from './assets/Pages/Feedback';
 import FaqSection from './assets/Pages/FaqSection';
 import WhatsappFloatingButton from './assets/Pages/WhatsappFloatingButton';
 import FaqAdmin from './assets/Pages/FaqAdmin';
-import Notifikasi from './assets/Pages/Notifikasi';
+import Notifikasi from './assets/Pages/Notifikasi'
+import HelpCenter from './assets/Pages/HelpCenter';
+import Laporan from './assets/Pages/Laporan';;
 import Laporan from './assets/Pages/Laporan';
 import BookingSchedule from './assets/Pages/BookingSchedule';
-import HelpCenter from './assets/Pages/HelpCenter';
+
 
 function App() {
   return (
     <>
       <Routes>
-        {/* Layout utama dengan sidebar & header */}
-        <Route element={<MainLayout />}>
-          <Route path="/" element={<Dashboard />} />
-          <Route path="/pelanggan" element={<CustomerManagement />} />
-          <Route path="/penjualan" element={<SalesManagement />} />
-          <Route path="/feedback" element={<Feedback />} />
-          <Route path="/faq" element={<FaqSection />} />
-          <Route path="/admin/faq" element={<FaqAdmin />} />
-          <Route path="/notifikasi" element={<Notifikasi />} />
-          <Route path="/laporan" element={<Laporan />} />
-          <Route path="/booking-schedule" element={<BookingSchedule />} />
-          <Route path="/bantuan" element={<HelpCenter />} />
-        </Route>
-
-        {/* Pendaftaran di luar layout utama */}
-        <Route path="/pendaftaran" element={<RegistrationForm />} />
-      </Routes>
-
-      {/* Tombol WhatsApp selalu tampil */}
-      <WhatsappFloatingButton />
+      <Route element={<MainLayout/>}>
+      <Route path="/" element={<Dashboard/>}/>
+      <Route path="Pelanggan" element={<CustomerManagement/>}/>
+      <Route path="/penjualan" element={<SalesManagement/>}/>
+      <Route path="/feedback" element={<Feedback/>}/>
+      <Route path="/faq" element={<FaqSection />} />
+      <Route path="/admin/faq" element={<FaqAdmin />} />
+      <Route path="notifikasi" element={<Notifikasi />} />
+      <Route path="laporan" element={<Laporan />} />
+      <Route path="/bantuan" element={<HelpCenter />} />
+      <Route path="/BookingSchedule" element={<BookingSchedule />} />
+      </Route>
+      <Route path="/pendaftaran" element={<RegistrationForm/>}/>
+      
+    </Routes>
+      <WhatsappFloatingButton /> {/* ✅ Tambahkan ini */}
     </>
   );
 }

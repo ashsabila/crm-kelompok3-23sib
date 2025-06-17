@@ -10,6 +10,7 @@ import {
   UserPlus,
   MessageSquare,
   NotebookIcon,
+  BookImageIcon,
 } from 'lucide-react'
 import { Link, useLocation } from 'react-router-dom'
 import { HelpCircle } from 'lucide-react';
@@ -27,6 +28,9 @@ const menuItems = [
   { name: "Layanan Mandiri(FAQ)", icon: <NotebookIcon />, path: "/faq" },
   { name: "FaqAdmin", icon: <NotebookIcon />, path: "/admin/faq" },
   { name: "Bantuan", icon: <HelpCircle />, path: "/bantuan" },
+  { name: "Booking and Schedule", icon: <BookImageIcon />, path: "/BookingSchedule" },
+
+
 ];
 
 const accountItems = [

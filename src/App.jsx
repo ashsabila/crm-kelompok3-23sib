@@ -9,7 +9,7 @@ import FaqSection from './assets/Pages/FaqSection';
 import WhatsappFloatingButton from './assets/Pages/WhatsappFloatingButton'; // ✅ Tambahkan ini
 import FaqAdmin from './assets/Pages/FaqAdmin';
 import Notifikasi from './assets/Pages/Notifikasi'
-import Laporan from './assets/Pages/Laporan';
+
 import BookingSchedule from './assets/Pages/BookingSchedule';
 
 

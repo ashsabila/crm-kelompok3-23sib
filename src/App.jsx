@@ -6,12 +6,18 @@ import SalesManagement from './assets/Pages/SalesManagement'
 import RegistrationForm from './assets/Pages/Registration'
 import Feedback from './assets/Pages/Feedback'
 import FaqSection from './assets/Pages/FaqSection';
-import WhatsappFloatingButton from './assets/Pages/WhatsappFloatingButton'; // ✅ Tambahkan ini
+import WhatsappFloatingButton from './assets/Pages/WhatsappFloatingButton';
 import FaqAdmin from './assets/Pages/FaqAdmin';
 import Laporan from './assets/Pages/Laporan';
 import Notifikasi from './assets/Pages/Notifikasi'
 
+import HelpCenter from './assets/Pages/HelpCenter';
+import Laporan from './assets/Pages/Laporan';
+
+
+
 import BookingSchedule from './assets/Pages/BookingSchedule';
+
 
 
 function App() {
@@ -27,7 +33,11 @@ function App() {
       <Route path="/admin/faq" element={<FaqAdmin />} />
       <Route path="notifikasi" element={<Notifikasi />} />
       <Route path="laporan" element={<Laporan />} />
+
+      <Route path="/bantuan" element={<HelpCenter />} />
+
       <Route path="/BookingSchedule" element={<BookingSchedule />} />
+
 
       </Route>
       <Route path="/pendaftaran" element={<RegistrationForm/>}/>

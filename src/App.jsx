@@ -9,7 +9,7 @@ import FaqSection from './assets/Pages/FaqSection';
 import WhatsappFloatingButton from './assets/Pages/WhatsappFloatingButton';
 import FaqAdmin from './assets/Pages/FaqAdmin';
 import Notifikasi from './assets/Pages/Notifikasi'
-import Laporan from './assets/Pages/Laporan';;
+import Laporan from './assets/Pages/Laporan';
 
 function App() {
   return (

@@ -12,6 +12,10 @@ import Laporan from './assets/Pages/Laporan';
 import LandingPage from './assets/Pages/Landing';
 import RegistrationPage from './assets/Pages/RegistrationPage';
 import LoginPage from './assets/Pages/LoginPage';
+import BookingSchedule from './assets/Pages/BookingSchedule';
+import PromoRoyalty from './assets/Pages/PromoRoyalty';
+import Class from './assets/Pages/Class';
+import HelpCenter from './assets/Pages/HelpCenter';
 
 function App() {
   return (
@@ -26,15 +30,20 @@ function App() {
       <Route path="/admin/faq" element={<FaqAdmin />} />
       <Route path="notifikasi" element={<Notifikasi />} />
       <Route path="laporan" element={<Laporan />} />
+      <Route path="BookingSchedule" element={<BookingSchedule/>} />
+      <Route path="PromoRoyalty" element={<PromoRoyalty />} />
+      <Route path="help" element={<HelpCenter />} />
+      <Route path="/class" element={<Class />} />
+
       </Route>
       <Route path="/" element={<LandingPage />} />
       <Route path="/pendaftaran" element={<RegistrationPage />} />
       <Route path="/login" element={<LoginPage />} />
+      
       
     </Routes>
       <WhatsappFloatingButton /> {/* ✅ Tambahkan ini */}
     </>
   );
 }
-
 export default App;

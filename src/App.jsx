@@ -3,7 +3,6 @@ import MainLayout from './components/MainLayout';
 import Dashboard from './assets/Pages/Dashboard';
 import CustomerManagement from './assets/Pages/CustomerManagement';
 import SalesManagement from './assets/Pages/SalesManagement';
-import RegistrationForm from './assets/Pages/Registration';
 import Feedback from './assets/Pages/Feedback';
 import FaqSection from './assets/Pages/FaqSection';
 import WhatsappFloatingButton from './assets/Pages/WhatsappFloatingButton';
@@ -11,6 +10,8 @@ import FaqAdmin from './assets/Pages/FaqAdmin';
 import Notifikasi from './assets/Pages/Notifikasi'
 import Laporan from './assets/Pages/Laporan';
 import LandingPage from './assets/Pages/Landing';
+import RegistrationPage from './assets/Pages/RegistrationPage';
+import LoginPage from './assets/Pages/LoginPage';
 
 function App() {
   return (
@@ -27,7 +28,8 @@ function App() {
       <Route path="laporan" element={<Laporan />} />
       </Route>
       <Route path="/" element={<LandingPage />} />
-      <Route path="/pendaftaran" element={<RegistrationForm/>}/>
+      <Route path="/pendaftaran" element={<RegistrationPage />} />
+      <Route path="/login" element={<LoginPage />} />
       
     </Routes>
       <WhatsappFloatingButton /> {/* ✅ Tambahkan ini */}

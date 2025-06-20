@@ -1,8 +1,16 @@
-import { Search, User } from 'lucide-react';
+import { Search, LogOut } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
 const Header = () => {
   const navigate = useNavigate();
+
+  // Fungsi logout dengan konfirmasi
+  const handleLogout = () => {
+    const confirmed = window.confirm("Are you sure you want to logout?");
+    if (confirmed) {
+      navigate('/'); // Atau arahkan ke halaman login jika berbeda
+    }
+  };
 
   return (
     <header className="sticky top-0 z-30 flex justify-between items-center px-6 py-4 bg-[#102B56] shadow-sm border-b border-blue-800 text-white">
@@ -23,21 +31,13 @@ const Header = () => {
           <Search className="absolute left-3 top-2.5 w-4 h-4 text-gray-400" />
         </div>
 
-        {/* Button Daftar */}
-        <button
-          onClick={() => navigate('/pendaftaran')}
-          className="bg-yellow-500 hover:bg-yellow-600 text-white text-sm font-semibold py-2 px-4 rounded-full transition"
-        >
-          Daftar Sekarang
-        </button>
-
-        {/* Sign In */}
+        {/* Logout */}
         <div
           className="flex items-center gap-2 text-sm cursor-pointer hover:text-yellow-400"
-          onClick={() => navigate('/signin')}
+          onClick={handleLogout}
         >
-          <User className="w-4 h-4" />
-          Sign In
+          <LogOut className="w-4 h-4" />
+          Logout
         </div>
       </div>
     </header>

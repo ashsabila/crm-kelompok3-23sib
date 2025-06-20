@@ -1,5 +1,8 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import equipment from "../gambar/equipment.jpg";
+import trainer from "../gambar/trainer.jpg";
+import location from "../gambar/location.png";
 
 export default function LandingPage() {
   return (
@@ -23,17 +26,17 @@ export default function LandingPage() {
         <h2 className="text-3xl font-bold text-center mb-12">Kenapa Pilih FocusFit?</h2>
         <div className="max-w-5xl mx-auto grid md:grid-cols-3 gap-8">
           <div className="text-center">
-            <img src="/trainer.svg" alt="Trainer" className="w-20 h-20 mx-auto mb-4" />
+            <img src={trainer} alt="Trainer" className="w-70 h-50 mx-auto mb-4" />
             <h3 className="text-xl font-semibold mb-2">Pelatih Profesional</h3>
             <p className="text-gray-300">Latihan dengan arahan dari trainer bersertifikat dan berpengalaman.</p>
           </div>
           <div className="text-center">
-            <img src="/equipment.svg" alt="Equipment" className="w-20 h-20 mx-auto mb-4" />
+            <img src={equipment} alt="Equipment" className="w-70 h-50 mx-auto mb-4" />
             <h3 className="text-xl font-semibold mb-2">Fasilitas Lengkap</h3>
             <p className="text-gray-300">Alat-alat modern dan lingkungan nyaman untuk semua jenis latihan.</p>
           </div>
           <div className="text-center">
-            <img src="/location.svg" alt="Location" className="w-20 h-20 mx-auto mb-4" />
+            <img src={location} alt="Location" className="w-70 h-50 mx-auto mb-4" />
             <h3 className="text-xl font-semibold mb-2">Lokasi Strategis</h3>
             <p className="text-gray-300">5 Cabang di Pekanbaru, mudah diakses dari mana saja.</p>
           </div>

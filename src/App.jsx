@@ -10,13 +10,14 @@ import WhatsappFloatingButton from './assets/Pages/WhatsappFloatingButton';
 import FaqAdmin from './assets/Pages/FaqAdmin';
 import Notifikasi from './assets/Pages/Notifikasi'
 import Laporan from './assets/Pages/Laporan';
+import LandingPage from './assets/Pages/Landing';
 
 function App() {
   return (
     <>
       <Routes>
       <Route element={<MainLayout/>}>
-      <Route path="/" element={<Dashboard/>}/>
+      <Route path="/dashboard" element={<Dashboard/>}/>
       <Route path="Pelanggan" element={<CustomerManagement/>}/>
       <Route path="/penjualan" element={<SalesManagement/>}/>
       <Route path="/feedback" element={<Feedback/>}/>
@@ -25,6 +26,7 @@ function App() {
       <Route path="notifikasi" element={<Notifikasi />} />
       <Route path="laporan" element={<Laporan />} />
       </Route>
+      <Route path="/" element={<LandingPage />} />
       <Route path="/pendaftaran" element={<RegistrationForm/>}/>
       
     </Routes>

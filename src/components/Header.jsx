@@ -5,7 +5,7 @@ const Header = () => {
   const navigate = useNavigate();
 
   return (
-    <header className="flex justify-between items-center px-6 py-4 bg-blue-900 shadow-sm border-b border-blue-800 sticky top-0 z-10 text-white">
+    <header className="sticky top-0 z-30 flex justify-between items-center px-6 py-4 bg-[#102B56] shadow-sm border-b border-blue-800 text-white">
       {/* Breadcrumb */}
       <div className="text-sm">
         Pages / <span className="font-semibold text-white">Dashboard</span>

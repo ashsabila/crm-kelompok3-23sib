@@ -12,10 +12,11 @@ import {
 } from 'lucide-react'
 import { Link, useLocation } from 'react-router-dom'
 import { Bell } from 'lucide-react';
+import logoFocusFit from '../assets/gambar/logoFocusFit.png'; 
 
 //menu item, bisa di tambahkan
 const menuItems = [
-  { name: 'Dashboard', icon: <LayoutDashboard />, path: '/' },
+  { name: 'Dashboard', icon: <LayoutDashboard />, path: '/dashboard' },
   { name: 'Produk', icon: <Box />, path: '/produk' },
   { name: 'Pelanggan', icon: <Users />, path: '/pelanggan' },
   { name: 'Penjualan', icon: <ShoppingCart />, path: '/penjualan' },
@@ -38,10 +39,10 @@ const Sidebar = () => {
   const isActive = (path) => location.pathname === path;
 
   return (
-    <aside className="bg-blue-900 w-64 h-screen shadow-lg px-4 py-6 hidden md:block text-white">
+    <aside className="fixed top-0 left-0 w-64 h-screen bg-[#102B56] text-white shadow-lg px-4 py-6 overflow-y-auto z-40 hidden md:block">
       {/* Logo Hanya Gambar */}
       <div className="flex justify-center mb-8">
-        <img src={logo} alt="Logo" className="w-200 h-20 object-contain" />
+        <img src={logoFocusFit} alt="Logo" className="w-200 h-20 object-contain" />
       </div>
 
       {/* Menu Utama */}
@@ -50,9 +51,9 @@ const Sidebar = () => {
           <Link
             key={item.name}
             to={item.path}
-            className={`flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-blue-700 transition ${
+            className={`flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-[#EEF0F3] transition ${
               isActive(item.path)
-                ? 'bg-white text-blue-900 font-semibold'
+                ? 'bg-[#EEF0F3] text-blue-900 font-semibold'
                 : 'text-white'
             }`}
           >

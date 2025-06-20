@@ -1,14 +1,14 @@
 import React, { useState } from "react";
 import { FaDumbbell } from "react-icons/fa";
-import yogaImg from "../../gambar/yoga.jpg";
-import zumbaImg from "../../gambar/zumba.jpg";
-import poundfitImg from "../../gambar/poundfit.jpg";
-import pilatesImg from "../../gambar/pilates.jpg";
-import aerobicImg from "../../gambar/aerobic.jpg";
-import spinningImg from "../../gambar/spinning.jpg";
-import muaithayImg from "../../gambar/muaithay.jpg";
-import cardioImg from "../../gambar/cardio.jpg";
-import TRXImg from "../../gambar/TRX.jpg";
+import yogaImg from "../gambar/yoga.jpg";
+import zumbaImg from "../gambar/zumba.jpg";
+import poundfitImg from "../gambar/poundfit.jpg";
+import pilatesImg from "../gambar/pilates.jpg";
+import aerobicImg from "../gambar/aerobic.jpg";
+import spinningImg from "../gambar/spinning.jpg";
+import muaithayImg from "../gambar/muaithay.jpg";
+import cardioImg from "../gambar/cardio.jpg";
+import TRXImg from "../gambar/TRX.jpg";
 
 const Class = () => {
   const [selectedClassIndex, setSelectedClassIndex] = useState(null);

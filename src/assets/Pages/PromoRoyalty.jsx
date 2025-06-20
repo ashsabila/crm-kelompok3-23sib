@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import gym1 from '../../gambar/gym1.jpg'
+import gym1 from '../gambar/gym1.jpg'
 
 const PromoRoyalty = () => {
   const [showEmailContent, setShowEmailContent] = useState(false);

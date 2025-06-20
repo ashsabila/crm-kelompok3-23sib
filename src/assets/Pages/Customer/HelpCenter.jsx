@@ -9,29 +9,6 @@ const HelpCenter = () => {
         <p className="text-gray-600 mt-2 text-sm">Kami siap membantu Anda. Temukan jawaban atau hubungi kami.</p>
       </div>
 
-      {/* FAQ */}
-      <section className="bg-white p-6 rounded-xl shadow-md">
-        <h2 className="text-xl font-semibold text-purple-700 mb-4">📚 Pertanyaan Umum (FAQ)</h2>
-        <div className="space-y-3">
-          <details className="group border-b pb-2">
-            <summary className="cursor-pointer font-medium text-gray-800 group-open:text-purple-600">
-              Bagaimana cara memperpanjang membership?
-            </summary>
-            <p className="text-sm text-gray-600 mt-1 ml-4">
-              Login dan klik menu "Pengaturan Akun" lalu pilih "Perpanjang".
-            </p>
-          </details>
-          <details className="group border-b pb-2">
-            <summary className="cursor-pointer font-medium text-gray-800 group-open:text-purple-600">
-              Bagaimana cara membatalkan booking?
-            </summary>
-            <p className="text-sm text-gray-600 mt-1 ml-4">
-              Masuk ke menu "Riwayat Booking", lalu klik tombol "Batalkan".
-            </p>
-          </details>
-        </div>
-      </section>
-
       {/* Form Keluhan */}
       <section className="bg-white p-6 rounded-xl shadow-md">
         <h2 className="text-xl font-semibold text-purple-700 mb-4">📝 Form Keluhan</h2>

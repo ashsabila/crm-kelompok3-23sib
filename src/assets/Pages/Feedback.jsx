@@ -1,47 +1,73 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { supabase } from "../../supabase";
 
 export default function Feedback() {
   const [feedbackList, setFeedbackList] = useState([]);
-  const [newFeedback, setNewFeedback] = useState({ name: "", message: "", rating: 0 });
+  const [newFeedback, setNewFeedback] = useState({name: "", message: "", rating: 0});
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setNewFeedback((prev) => ({ ...prev, [name]: value }));
   };
-
-  // Untuk pilih rating, kita buat fungsi khusus agar mudah pakai klik bintang
+  
   const handleRatingChange = (rating) => {
     setNewFeedback((prev) => ({ ...prev, rating }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (!newFeedback.name || !newFeedback.message || newFeedback.rating === 0) return;
 
-    const feedbackWithId = {
-      id: Date.now(),
-      ...newFeedback,
-      rating: Number(newFeedback.rating),
-    };
+    const { error } = await supabase.from("feedback").insert([
+      {
+        name: newFeedback.name,
+        pesan: newFeedback.message,
+        rating: newFeedback.rating,
+      },
+    ]);
 
-    setFeedbackList([feedbackWithId, ...feedbackList]);
-    setNewFeedback({ name: "", message: "", rating: 0 });
+    if (error) {
+      alert("Gagal menyimpan feedback: " + error.message);
+    } else {
+      alert("Feedback berhasil dikirim!");
+      setNewFeedback({ name: "", message: "", rating: 0 });
+      fetchFeedback(); // refresh data
+    }
   };
 
-  const handleDelete = (id) => {
-    setFeedbackList(feedbackList.filter((item) => item.id !== id));
+  const handleDelete = async (id) => {
+    const { error } = await supabase.from("feedback").delete().eq("id", id);
+    if (error) {
+      alert("Gagal menghapus: " + error.message);
+    } else {
+      setFeedbackList(feedbackList.filter((item) => item.id !== id));
+    }
   };
 
-  // Komponen untuk menampilkan bintang, bisa di klik atau hanya display
+  const fetchFeedback = async () => {
+    const { data, error } = await supabase
+      .from("feedback")
+      .select("*")
+      .order("created_at", { ascending: false });
+
+    if (error) {
+      console.error("Error fetching feedback:", error.message);
+    } else {
+      setFeedbackList(data);
+    }
+  };
+
+  useEffect(() => {
+    fetchFeedback();
+  }, []);
+
   const StarRating = ({ rating, onChange, editable = false }) => {
     const stars = [];
     for (let i = 1; i <= 5; i++) {
       stars.push(
         <span
           key={i}
-          className={`cursor-pointer text-2xl ${
-            i <= rating ? "text-yellow-400" : "text-gray-300"
-          }`}
+          className={`cursor-pointer text-2xl ${i <= rating ? "text-yellow-400" : "text-gray-300"}`}
           onClick={() => editable && onChange(i)}
           role={editable ? "button" : undefined}
           aria-label={editable ? `Set rating to ${i}` : undefined}
@@ -120,7 +146,7 @@ export default function Feedback() {
                     Hapus
                   </button>
                 </div>
-                <p className="text-gray-800">{item.message}</p>
+                <p className="text-gray-800">{item.pesan}</p>
               </li>
             ))}
           </ul>

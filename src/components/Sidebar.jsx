@@ -15,6 +15,7 @@ import { Bell } from 'lucide-react';
 import logoFocusFit from '../assets/gambar/logoFocusFit.png';
 import { GiClassicalKnowledge } from 'react-icons/gi';
 import { MdSchedule } from 'react-icons/md';
+import { CgAddR } from 'react-icons/cg';
 
 const menuItems = [
   { name: 'Dashboard', icon: <LayoutDashboard />, path: '/dashboard' },
@@ -28,14 +29,15 @@ const menuItems = [
   { name: 'FaqAdmin', icon: <NotebookIcon />, path: '/admin/faq' },
   { name: 'Booking and Schedule', icon: <MdSchedule className="text-[20px]" />, path: '/BookingSchedule' },
   { name: 'Promo and Royalty', icon: <Disc />, path: '/PromoRoyalty' },
-  { name: 'Help Center', icon: <Disc />, path: '/help' },
+  { name: 'Tambah Class', icon: <CgAddR />, path: '/FormClass' },
+  
 ];
 
-const accountItems = [
-  { name: 'Pengaturan Akun', icon: <Settings />, path: '/akun' },
-  { name: 'Sign In', icon: <LogIn />, path: '/signin' },
-  { name: 'Sign Up', icon: <UserPlus />, path: '/signup' },
-];
+// const accountItems = [
+//   { name: 'Pengaturan Akun', icon: <Settings />, path: '/akun' },
+//   { name: 'Sign In', icon: <LogIn />, path: '/signin' },
+//   { name: 'Sign Up', icon: <UserPlus />, path: '/signup' },
+// ];
 
 const Sidebar = () => {
   const location = useLocation();
@@ -68,7 +70,7 @@ const Sidebar = () => {
       </nav>
 
       {/* Akun */}
-      <div className="mt-8 text-xs font-semibold text-gray-300">AKUN</div>
+      {/* <div className="mt-8 text-xs font-semibold text-gray-300">AKUN</div>
       <nav className="mt-2 space-y-1">
         {accountItems.map((item) => (
           <Link
@@ -84,7 +86,7 @@ const Sidebar = () => {
             {item.name}
           </Link>
         ))}
-      </nav>
+      </nav> */}
     </aside>
   );
 };

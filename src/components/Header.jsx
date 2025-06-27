@@ -1,27 +1,31 @@
-import { Search, LogOut } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
+import { Search, LogOut, Settings, User } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 const Header = () => {
   const navigate = useNavigate();
 
-  // Fungsi logout dengan konfirmasi
   const handleLogout = () => {
     const confirmed = window.confirm("Are you sure you want to logout?");
     if (confirmed) {
-      navigate('/'); // Atau arahkan ke halaman login jika berbeda
+      navigate("/");
     }
   };
 
+  const goToSettings = () => {
+    navigate("/settings");
+  };
+
+  const goToProfile = () => {
+    navigate("/profile");
+  };
+
   return (
-    <header className="sticky top-0 z-30 flex justify-between items-center px-6 py-4 bg-[#102B56] shadow-sm border-b border-blue-800 text-white">
-      {/* Breadcrumb */}
+    <header className="sticky top-0 z-50 flex justify-between items-center px-6 py-4 bg-[#102B56] shadow-sm border-b border-blue-800 text-white">
       <div className="text-sm">
         Pages / <span className="font-semibold text-white">Dashboard</span>
       </div>
 
-      {/* Right Controls */}
       <div className="flex items-center gap-4">
-        {/* Search */}
         <div className="relative">
           <input
             type="text"
@@ -31,10 +35,28 @@ const Header = () => {
           <Search className="absolute left-3 top-2.5 w-4 h-4 text-gray-400" />
         </div>
 
+        {/* Icon Akun */}
+        <div
+          onClick={goToProfile}
+          className="cursor-pointer hover:text-yellow-400"
+          title="Akun Saya"
+        >
+          <User className="w-5 h-5" />
+        </div>
+
+        {/* Icon Settings */}
+        <div
+          onClick={goToSettings}
+          className="cursor-pointer hover:text-yellow-400"
+          title="Settings"
+        >
+          <Settings className="w-5 h-5" />
+        </div>
+
         {/* Logout */}
         <div
-          className="flex items-center gap-2 text-sm cursor-pointer hover:text-yellow-400"
           onClick={handleLogout}
+          className="flex items-center gap-2 text-sm cursor-pointer hover:text-yellow-400"
         >
           <LogOut className="w-4 h-4" />
           Logout

@@ -1,10 +1,19 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
-const BookingSchedule = () => {
+export default function BookingSchedule() {
   const [activeTab, setActiveTab] = useState("schedule");
   const [showRescheduleForm, setShowRescheduleForm] = useState(false);
-  const [bookingHistory, setBookingHistory] = useState([]);
-  const [slotCounts, setSlotCounts] = useState({}); // key: "Yoga-7.00 AM" -> number of bookings
+
+  const [bookingHistory, setBookingHistory] = useState(() => {
+    const stored = localStorage.getItem("bookingHistory");
+    return stored ? JSON.parse(stored) : [];
+  });
+
+  const [slotCounts, setSlotCounts] = useState(() => {
+    const stored = localStorage.getItem("slotCounts");
+    return stored ? JSON.parse(stored) : {};
+  });
+
   const MAX_CAPACITY = 15;
 
   const schedule = {
@@ -45,10 +54,14 @@ const BookingSchedule = () => {
     ],
   };
 
+  useEffect(() => {
+    localStorage.setItem("bookingHistory", JSON.stringify(bookingHistory));
+    localStorage.setItem("slotCounts", JSON.stringify(slotCounts));
+  }, [bookingHistory, slotCounts]);
+
   const handleBooking = (className, time) => {
     const key = `${className}-${time}`;
     const currentCount = slotCounts[key] || 0;
-
     if (currentCount >= MAX_CAPACITY) return;
 
     const today = new Date();
@@ -59,6 +72,7 @@ const BookingSchedule = () => {
     });
 
     const newBooking = {
+      id: Date.now(),
       title: className,
       time: `${formattedDate}, ${time}`,
       status: "Booked",
@@ -71,6 +85,65 @@ const BookingSchedule = () => {
     }));
     alert(`${className} at ${time} has been booked.`);
     setActiveTab("history");
+  };
+
+  const updateBookingStatus = (id, status) => {
+    setBookingHistory((prev) =>
+      prev.map((item) => (item.id === id ? { ...item, status } : item))
+    );
+  };
+
+  const renderBookingCard = (title, status, colorClass) => {
+    const filtered = bookingHistory.filter((b) => b.status === status);
+    return (
+      <div className={`border-l-4 ${colorClass} bg-white rounded-md shadow p-4`}>
+        <h3 className="text-xl font-semibold mb-4">{title}</h3>
+        {filtered.length === 0 ? (
+          <p className="text-gray-400 italic">Belum ada data</p>
+        ) : (
+          filtered.map((item) => (
+            <div
+              key={item.id}
+              className="flex justify-between items-center border rounded-md p-3 mb-2 bg-gray-50"
+            >
+              <div>
+                <div className="font-medium">{item.title}</div>
+                <div className="text-sm text-gray-600">{item.time}</div>
+              </div>
+              <div className="flex gap-3 items-center">
+                <span
+                  className={`font-medium ${
+                    item.status === "Cancelled"
+                      ? "text-red-600"
+                      : item.status === "Done"
+                      ? "text-gray-500"
+                      : "text-green-600"
+                  }`}
+                >
+                  {item.status}
+                </span>
+                {item.status === "Booked" && (
+                  <>
+                    <button
+                      onClick={() => updateBookingStatus(item.id, "Done")}
+                      className="text-green-600 hover:underline text-sm"
+                    >
+                      Selesai
+                    </button>
+                    <button
+                      onClick={() => updateBookingStatus(item.id, "Cancelled")}
+                      className="text-red-600 hover:underline text-sm"
+                    >
+                      Batal
+                    </button>
+                  </>
+                )}
+              </div>
+            </div>
+          ))
+        )}
+      </div>
+    );
   };
 
   return (
@@ -86,7 +159,6 @@ const BookingSchedule = () => {
           </button>
         </div>
 
-        {/* Tabs */}
         <div className="flex border-b mb-4">
           <button
             className={`mr-4 pb-2 ${
@@ -110,7 +182,6 @@ const BookingSchedule = () => {
           </button>
         </div>
 
-        {/* Schedule */}
         {activeTab === "schedule" && (
           <div className="grid grid-cols-1 lg:grid-cols-7 gap-4 overflow-x-auto">
             {Object.entries(schedule).map(([day, classes]) => (
@@ -156,33 +227,15 @@ const BookingSchedule = () => {
           </div>
         )}
 
-        {/* Booking History */}
         {activeTab === "history" && (
-          <div className="mt-4 space-y-4">
-            {bookingHistory.map((item, index) => (
-              <div
-                key={index}
-                className="flex justify-between items-center border rounded-md p-4 shadow-sm bg-gray-50"
-              >
-                <div>
-                  <div className="font-medium">{item.title}</div>
-                  <div className="text-sm text-gray-600">{item.time}</div>
-                </div>
-                <div className="flex items-center gap-4">
-                  <span className="text-green-600 font-medium">
-                    {item.status}
-                  </span>
-                  <button className="text-blue-600 hover:underline">
-                    Give Feedback
-                  </button>
-                </div>
-              </div>
-            ))}
+          <div className="space-y-6 mt-6">
+            {renderBookingCard("⏳ Booked Classes", "Booked", "border-green-500")}
+            {renderBookingCard("✅ Completed Classes", "Done", "border-gray-400")}
+            {renderBookingCard("❌ Cancelled Classes", "Cancelled", "border-red-500")}
           </div>
         )}
       </div>
 
-      {/* Reschedule Form */}
       {showRescheduleForm && (
         <div className="bg-white shadow-md rounded-xl p-6">
           <h3 className="text-xl font-semibold mb-4">Request Reschedule</h3>
@@ -190,13 +243,17 @@ const BookingSchedule = () => {
             <div>
               <label className="block font-medium mb-1">Select Class</label>
               <select className="w-full border rounded-md p-2">
-                <option>Yoga</option>
-                <option>Zumba</option>
-                <option>HIIT</option>
-                <option>Pilates</option>
-                <option>Boxing</option>
-                <option>Cardio Blast</option>
-                <option>Restorative Yoga</option>
+                {[
+                  "Yoga",
+                  "Zumba",
+                  "HIIT",
+                  "Pilates",
+                  "Boxing",
+                  "Cardio Blast",
+                  "Restorative Yoga",
+                ].map((cls, i) => (
+                  <option key={i}>{cls}</option>
+                ))}
               </select>
             </div>
             <div>
@@ -218,6 +275,4 @@ const BookingSchedule = () => {
       )}
     </div>
   );
-};
-
-export default BookingSchedule;
+}

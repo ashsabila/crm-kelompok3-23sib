@@ -15,7 +15,9 @@ import LoginPage from './assets/Pages/LoginPage';
 import BookingSchedule from './assets/Pages/BookingSchedule';
 import PromoRoyalty from './assets/Pages/PromoRoyalty';
 import Class from './assets/Pages/Class';
-import HelpCenter from './assets/Pages/HelpCenter';
+import FromClass from './assets/Pages/FormClass';
+import Profile from './assets/Pages/Profile';
+import Settings from './assets/Pages/Setting';
 
 function App() {
   return (
@@ -23,6 +25,8 @@ function App() {
       <Routes>
       <Route element={<MainLayout/>}>
       <Route path="/dashboard" element={<Dashboard/>}/>
+      <Route path="/profile" element={<Profile />} />
+      <Route path="/settings" element={<Settings />} />
       <Route path="Pelanggan" element={<CustomerManagement/>}/>
       <Route path="/penjualan" element={<SalesManagement/>}/>
       <Route path="/feedback" element={<Feedback/>}/>
@@ -32,8 +36,8 @@ function App() {
       <Route path="laporan" element={<Laporan />} />
       <Route path="BookingSchedule" element={<BookingSchedule/>} />
       <Route path="PromoRoyalty" element={<PromoRoyalty />} />
-      <Route path="help" element={<HelpCenter />} />
       <Route path="/class" element={<Class />} />
+      <Route path="/FormClass" element={<FromClass />} />
 
       </Route>
       <Route path="/" element={<LandingPage />} />

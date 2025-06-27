@@ -9,7 +9,7 @@ export default function RegistrationPage() {
     name: "",
     phone: "",
     email: "",
-    password: "", // ✅ Tambahkan password ke state
+    password: "",
     code: "",
   });
 
@@ -21,6 +21,13 @@ export default function RegistrationPage() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+
+    const { name, email } = form;
+
+    // Simpan nama dan email ke localStorage untuk halaman Profile
+    const userData = { name, email };
+    localStorage.setItem("userProfile", JSON.stringify(userData));
+
     alert("Pendaftaran Berhasil!\n" + JSON.stringify(form, null, 2));
     navigate("/dashboard");
   };
@@ -38,7 +45,7 @@ export default function RegistrationPage() {
 
       {/* Kanan: Logo + Form */}
       <div className="w-full md:w-1/2 bg-[#0F2B56] flex flex-col items-center justify-center p-6">
-        {/* Logo di luar card */}
+        {/* Logo */}
         <img src={logoFocusFit} alt="Logo" className="w-40 mb-6" />
 
         {/* Card Form */}
@@ -96,7 +103,6 @@ export default function RegistrationPage() {
               className="bg-[#F5F5F5] w-full p-3 rounded text-sm"
             />
 
-            {/* ✅ Tambahan input Password */}
             <input
               type="password"
               name="password"

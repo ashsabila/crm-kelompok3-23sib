@@ -18,6 +18,8 @@ import Class from './assets/Pages/Class';
 import FromClass from './assets/Pages/FormClass';
 import Profile from './assets/Pages/Profile';
 import Settings from './assets/Pages/Setting';
+import AdminFeedback from './assets/Pages/AdminFeedback';
+import DashboardMember from './assets/Pages/DashboardMember';
 
 function App() {
   return (
@@ -38,6 +40,10 @@ function App() {
       <Route path="PromoRoyalty" element={<PromoRoyalty />} />
       <Route path="/class" element={<Class />} />
       <Route path="/FormClass" element={<FromClass />} />
+      <Route path="/admin/fb" element={<AdminFeedback />} />
+      <Route path="/dashboard/mem" element={<DashboardMember />} />
+
+
 
       </Route>
       <Route path="/" element={<LandingPage />} />

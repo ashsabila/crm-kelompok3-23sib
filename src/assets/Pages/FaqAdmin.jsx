@@ -5,6 +5,7 @@ const FaqAdmin = () => {
   const [form, setForm] = useState({ question: "", answer: "" });
   const [editIndex, setEditIndex] = useState(null);
 
+  // Load dari localStorage saat pertama kali
   useEffect(() => {
     const savedFaqs = localStorage.getItem("faqData");
     if (savedFaqs) {
@@ -12,9 +13,10 @@ const FaqAdmin = () => {
     }
   }, []);
 
-  useEffect(() => {
-    localStorage.setItem("faqData", JSON.stringify(faqs));
-  }, [faqs]);
+  const saveToStorage = (data) => {
+    localStorage.setItem("faqData", JSON.stringify(data));
+    window.dispatchEvent(new Event("storage")); // Notify halaman lain
+  };
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -23,15 +25,17 @@ const FaqAdmin = () => {
   const handleAdd = () => {
     if (!form.question || !form.answer) return;
 
+    let updatedFaqs;
     if (editIndex !== null) {
-      const updatedFaqs = [...faqs];
+      updatedFaqs = [...faqs];
       updatedFaqs[editIndex] = { ...form };
-      setFaqs(updatedFaqs);
       setEditIndex(null);
     } else {
-      setFaqs([...faqs, form]);
+      updatedFaqs = [...faqs, form];
     }
 
+    setFaqs(updatedFaqs);
+    saveToStorage(updatedFaqs);
     setForm({ question: "", answer: "" });
   };
 
@@ -43,6 +47,7 @@ const FaqAdmin = () => {
   const handleDelete = (index) => {
     const updatedFaqs = faqs.filter((_, i) => i !== index);
     setFaqs(updatedFaqs);
+    saveToStorage(updatedFaqs);
     setForm({ question: "", answer: "" });
     setEditIndex(null);
   };

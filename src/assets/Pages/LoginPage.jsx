@@ -11,6 +11,10 @@ export default function LoginPage() {
     password: "",
   });
 
+  // Konstanta untuk login admin
+  const ADMIN_EMAIL = "admin@focusfit.com";
+  const ADMIN_PASSWORD = "admin123";
+
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
@@ -25,13 +29,22 @@ export default function LoginPage() {
       return;
     }
 
-    // Simpan ke localStorage
+    // Validasi admin
+    let role = "member"; // default
+    if (email === ADMIN_EMAIL && password === ADMIN_PASSWORD) {
+      role = "admin";
+    } else if (email === ADMIN_EMAIL && password !== ADMIN_PASSWORD) {
+      alert("Password admin salah!");
+      return;
+    }
+
     const userData = {
       name,
       email,
+      role, // ⬅️ simpan role ke localStorage
     };
-    localStorage.setItem("userProfile", JSON.stringify(userData));
 
+    localStorage.setItem("userProfile", JSON.stringify(userData));
     alert("Login sukses!");
     navigate("/dashboard");
   };

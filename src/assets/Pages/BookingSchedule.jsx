@@ -16,6 +16,17 @@ export default function BookingSchedule() {
 
   const MAX_CAPACITY = 15;
 
+  const trainerMap = {
+    Yoga: { name: "Fitri", contact: "https://wa.me/628123456789" },
+    Pilates: { name: "Rani", contact: "https://wa.me/628123456788" },
+    Cardio: { name: "Dika", contact: "https://wa.me/628123456787" },
+    Zumba: { name: "Santi", contact: "https://wa.me/628123456786" },
+    HIIT: { name: "Kevin", contact: "https://wa.me/628123456785" },
+    Boxing: { name: "Aldi", contact: "https://wa.me/628123456784" },
+    "Cardio Blast": { name: "Mira", contact: "https://wa.me/628123456783" },
+    "Restorative Yoga": { name: "Nina", contact: "https://wa.me/628123456782" },
+  };
+
   const schedule = {
     Monday: [
       { class: "Yoga", time: "7.00 AM" },
@@ -109,6 +120,16 @@ export default function BookingSchedule() {
               <div>
                 <div className="font-medium">{item.title}</div>
                 <div className="text-sm text-gray-600">{item.time}</div>
+                {item.status === "Booked" && trainerMap[item.title] && (
+                  <a
+                    href={trainerMap[item.title].contact}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-block mt-2 text-blue-600 text-sm hover:underline"
+                  >
+                    💬 Chat Trainer ({trainerMap[item.title].name})
+                  </a>
+                )}
               </div>
               <div className="flex gap-3 items-center">
                 <span
@@ -243,15 +264,7 @@ export default function BookingSchedule() {
             <div>
               <label className="block font-medium mb-1">Select Class</label>
               <select className="w-full border rounded-md p-2">
-                {[
-                  "Yoga",
-                  "Zumba",
-                  "HIIT",
-                  "Pilates",
-                  "Boxing",
-                  "Cardio Blast",
-                  "Restorative Yoga",
-                ].map((cls, i) => (
+                {["Yoga", "Zumba", "HIIT", "Pilates", "Boxing", "Cardio Blast", "Restorative Yoga"].map((cls, i) => (
                   <option key={i}>{cls}</option>
                 ))}
               </select>

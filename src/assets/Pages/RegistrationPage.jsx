@@ -21,38 +21,35 @@ export default function RegistrationPage() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    const { name, email, password } = form;
 
-    const { name, email } = form;
+    const existingUsers = JSON.parse(localStorage.getItem("registeredUsers")) || [];
+    const isEmailTaken = existingUsers.some((user) => user.email === email);
+    if (isEmailTaken) {
+      alert("Email sudah terdaftar. Silakan login.");
+      return;
+    }
 
-    // Simpan nama dan email ke localStorage untuk halaman Profile
-    const userData = { name, email };
-    localStorage.setItem("userProfile", JSON.stringify(userData));
+    const newUser = { name, email, password };
+    const updatedUsers = [...existingUsers, newUser];
+    localStorage.setItem("registeredUsers", JSON.stringify(updatedUsers));
 
-    alert("Pendaftaran Berhasil!\n" + JSON.stringify(form, null, 2));
+    localStorage.setItem("userProfile", JSON.stringify({ name, email, role: "member" }));
+
+    alert("Pendaftaran berhasil!");
     navigate("/dashboard");
   };
 
   return (
     <div className="min-h-screen flex">
-      {/* Kiri: Gambar */}
       <div className="w-[50%] h-[730px]">
-        <img
-          src={gymImage}
-          alt="FocusFit Gym"
-          className="w-full h-full object-cover"
-        />
+        <img src={gymImage} alt="FocusFit Gym" className="w-full h-full object-cover" />
       </div>
 
-      {/* Kanan: Logo + Form */}
       <div className="w-full md:w-1/2 bg-[#0F2B56] flex flex-col items-center justify-center p-6">
-        {/* Logo */}
         <img src={logoFocusFit} alt="Logo" className="w-40 mb-6" />
-
-        {/* Card Form */}
         <div className="bg-[#D9B44A] p-8 rounded-lg w-full max-w-md">
-          <h2 className="text-xl text-white font-bold text-center mb-6">
-            Join Us
-          </h2>
+          <h2 className="text-xl text-white font-bold text-center mb-6">Join Us</h2>
 
           <form onSubmit={handleSubmit} className="space-y-4">
             <select
@@ -60,17 +57,12 @@ export default function RegistrationPage() {
               value={form.club}
               onChange={handleChange}
               required
-              className="bg-[#F5F5F5] w-full p-3 rounded focus:outline-none text-sm"
+              className="bg-[#F5F5F5] w-full p-3 rounded text-sm"
             >
               <option value="">Choose Club</option>
               <option value="Grand FocusFit - Karawang">Grand FocusFit - Karawang</option>
               <option value="Grand FocusFit - Pekanbaru">Grand FocusFit - Pekanbaru</option>
-              <option value="Grand FocusFit - Cilegon">Grand FocusFit - Cilegon</option>
-              <option value="FocusFit - Soekarno Hatta">FocusFit - Soekarno Hatta</option>
               <option value="FocusFit - Tuanku Tambusai">FocusFit - Tuanku Tambusai</option>
-              <option value="FocusFit - Panam">FocusFit - Panam</option>
-              <option value="FocusFit - Setia Budhi">FocusFit - Setia Budhi</option>
-              <option value="FocusFit - Arifin Ahmad">FocusFit - Arifin Ahmad</option>
             </select>
 
             <input
@@ -124,7 +116,7 @@ export default function RegistrationPage() {
 
             <button
               type="submit"
-              className="w-full bg-[#0F2B56] text-white font-semibold py-3 rounded mt-2 hover:bg-[#0a2349] transition"
+              className="w-full bg-[#0F2B56] text-white font-semibold py-3 rounded hover:bg-[#0a2349]"
             >
               Sign Up Now
             </button>

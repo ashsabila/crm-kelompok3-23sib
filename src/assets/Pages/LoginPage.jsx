@@ -11,7 +11,6 @@ export default function LoginPage() {
     password: "",
   });
 
-  // Konstanta untuk login admin
   const ADMIN_EMAIL = "admin@focusfit.com";
   const ADMIN_PASSWORD = "admin123";
 
@@ -21,7 +20,6 @@ export default function LoginPage() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
     const { name, email, password } = form;
 
     if (!name || !email || !password) {
@@ -29,22 +27,28 @@ export default function LoginPage() {
       return;
     }
 
-    // Validasi admin
-    let role = "member"; // default
-    if (email === ADMIN_EMAIL && password === ADMIN_PASSWORD) {
-      role = "admin";
-    } else if (email === ADMIN_EMAIL && password !== ADMIN_PASSWORD) {
-      alert("Password admin salah!");
+    if (email === ADMIN_EMAIL) {
+      if (password === ADMIN_PASSWORD) {
+        localStorage.setItem("userProfile", JSON.stringify({ name, email, role: "admin" }));
+        alert("Login Admin sukses!");
+        navigate("/dashboard");
+      } else {
+        alert("Password admin salah!");
+      }
       return;
     }
 
-    const userData = {
-      name,
-      email,
-      role, // ⬅️ simpan role ke localStorage
-    };
+    const registeredUsers = JSON.parse(localStorage.getItem("registeredUsers")) || [];
+    const matchedUser = registeredUsers.find(
+      (user) => user.email === email && user.password === password
+    );
 
-    localStorage.setItem("userProfile", JSON.stringify(userData));
+    if (!matchedUser) {
+      alert("Email atau password salah atau belum terdaftar!");
+      return;
+    }
+
+    localStorage.setItem("userProfile", JSON.stringify({ name: matchedUser.name, email, role: "member" }));
     alert("Login sukses!");
     navigate("/dashboard");
   };
@@ -100,11 +104,12 @@ export default function LoginPage() {
         </form>
 
         <p className="mt-4 text-sm text-center text-[#0F2B56]">
+          Belum punya akun?{" "}
           <span
             className="text-white hover:underline cursor-pointer font-semibold"
-            onClick={() => navigate("/")}
+            onClick={() => navigate("/register")}
           >
-            Forgot Password?
+            Daftar Sekarang
           </span>
         </p>
       </div>

@@ -51,14 +51,13 @@ const Dashboard = () => {
     monthlyCustomers[month]++;
   });
 
-  // Format rupiah
   const formatCurrency = (num) =>
     new Intl.NumberFormat("id-ID", {
       style: "currency",
       currency: "IDR",
     }).format(num);
 
-  // Pie Chart Data: Penjualan per layanan bulan ini
+  // === PIE CHART FIXED ===
   const salesThisMonth = sales.filter(
     (s) => new Date(s.date).getMonth() === currentMonth
   );
@@ -77,7 +76,9 @@ const Dashboard = () => {
   };
 
   const pieData = {
-    labels: Object.keys(serviceTotals).map((id) => serviceNames[id] || "Layanan Lain"),
+    labels: Object.keys(serviceTotals).map(
+      (id) => serviceNames[Number(id)] || "Layanan Lain"
+    ),
     datasets: [
       {
         data: Object.values(serviceTotals),

@@ -20,6 +20,7 @@ import Profile from './assets/Pages/Profile';
 import Settings from './assets/Pages/Setting';
 import AdminFeedback from './assets/Pages/AdminFeedback';
 import DashboardMember from './assets/Pages/DashboardMember';
+import AdminRescheduleRequests from './assets/Pages/AdminRescheduleRequests';
 
 function App() {
   return (
@@ -42,6 +43,7 @@ function App() {
       <Route path="/FormClass" element={<FromClass />} />
       <Route path="/admin/fb" element={<AdminFeedback />} />
       <Route path="/dashboard/mem" element={<DashboardMember />} />
+      <Route path="/req/res" element={<AdminRescheduleRequests />} />
 
 
 

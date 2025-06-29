@@ -40,7 +40,8 @@ const Sidebar = () => {
     { name: "Tambah Class & Trainer", icon: <CgAddR />, path: "/FormClass" },
     { name: "Laporan", icon: <BarChart2 />, path: "/laporan" },
     { name: "FAQ Admin", icon: <NotebookIcon />, path: "/admin/faq" },
-    { name: "Masukan Member", icon: <MessageSquare />, path: "/admin/fb" },
+    { name: "Feedback Member", icon: <MessageSquare />, path: "/admin/fb" },
+    { name: "Request Reschedule", icon: <MessageSquare />, path: "/req/res" },
   ];
 
   const memberMenu = [
@@ -49,7 +50,7 @@ const Sidebar = () => {
     { name: "Booking Schedule", icon: <MdSchedule className="text-[20px]" />, path: "/BookingSchedule" },
     { name: "Promo & Royalty", icon: <Disc />, path: "/PromoRoyalty" },
     { name: "Notifikasi", icon: <Bell />, path: "/notifikasi" },
-    { name: "Masukan", icon: <MessageSquare />, path: "/feedback" },
+    { name: "Feedback", icon: <MessageSquare />, path: "/feedback" },
     { name: "FAQ", icon: <NotebookIcon />, path: "/faq" },
   ];
 

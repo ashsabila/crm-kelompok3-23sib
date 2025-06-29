@@ -3,12 +3,10 @@ import React, { useState, useEffect } from "react";
 export default function BookingSchedule() {
   const [activeTab, setActiveTab] = useState("schedule");
   const [showRescheduleForm, setShowRescheduleForm] = useState(false);
-
   const [bookingHistory, setBookingHistory] = useState(() => {
     const stored = localStorage.getItem("bookingHistory");
     return stored ? JSON.parse(stored) : [];
   });
-
   const [slotCounts, setSlotCounts] = useState(() => {
     const stored = localStorage.getItem("slotCounts");
     return stored ? JSON.parse(stored) : {};
@@ -102,6 +100,29 @@ export default function BookingSchedule() {
     setBookingHistory((prev) =>
       prev.map((item) => (item.id === id ? { ...item, status } : item))
     );
+  };
+
+  const handleSubmitReschedule = (e) => {
+    e.preventDefault();
+    const form = e.target;
+    const className = form.className.value;
+    const date = form.date.value;
+    const time = form.time.value;
+
+    const newRequest = {
+      id: Date.now(),
+      className,
+      date,
+      time,
+      status: "Pending",
+      user: "Member", // Tambahkan user agar dikenali
+    };
+
+    const existing = JSON.parse(localStorage.getItem("rescheduleRequests")) || [];
+    localStorage.setItem("rescheduleRequests", JSON.stringify([...existing, newRequest]));
+
+    alert("✅ Permintaan reschedule berhasil dikirim.");
+    setShowRescheduleForm(false);
   };
 
   const renderBookingCard = (title, status, colorClass) => {
@@ -260,22 +281,22 @@ export default function BookingSchedule() {
       {showRescheduleForm && (
         <div className="bg-white shadow-md rounded-xl p-6">
           <h3 className="text-xl font-semibold mb-4">Request Reschedule</h3>
-          <form className="space-y-4">
+          <form className="space-y-4" onSubmit={handleSubmitReschedule}>
             <div>
               <label className="block font-medium mb-1">Select Class</label>
-              <select className="w-full border rounded-md p-2">
-                {["Yoga", "Zumba", "HIIT", "Pilates", "Boxing", "Cardio Blast", "Restorative Yoga"].map((cls, i) => (
+              <select name="className" className="w-full border rounded-md p-2">
+                {["Yoga","Zumba","HIIT","Pilates","Boxing","Cardio Blast","Restorative Yoga"].map((cls, i) => (
                   <option key={i}>{cls}</option>
                 ))}
               </select>
             </div>
             <div>
               <label className="block font-medium mb-1">Preferred Date</label>
-              <input type="date" className="w-full border rounded-md p-2" />
+              <input type="date" name="date" className="w-full border rounded-md p-2" required />
             </div>
             <div>
               <label className="block font-medium mb-1">Preferred Time</label>
-              <input type="time" className="w-full border rounded-md p-2" />
+              <input type="time" name="time" className="w-full border rounded-md p-2" required />
             </div>
             <button
               type="submit"

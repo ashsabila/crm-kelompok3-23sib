@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   Gift,
   AlertCircle,
@@ -22,7 +22,7 @@ const todayClass = [
 const adminMessages = [
   "🎉 Akan ada kelas baru HIIT Boxing mulai bulan depan!",
   "🧘‍♂️ Promo Yoga Bulan Juli – gratis 2 sesi untuk member aktif.",
-  "💡 Tips hari ini: Jangan lupa minum air putih sebelum dan sesudah latihan."
+  "💡 Tips hari ini: Jangan lupa minum air putih sebelum dan sesudah latihan.",
 ];
 
 function isBirthdayToday(birthday) {
@@ -41,7 +41,39 @@ function daysLeft(date) {
 export default function Notifikasi() {
   const birthdayToday = customers.filter((c) => isBirthdayToday(c.birthday));
   const inactiveCustomers = customers.filter((c) => !c.active);
-  const expiringSoon = customers.filter((c) => daysLeft(c.membershipEnd) <= 5 && daysLeft(c.membershipEnd) >= 0);
+  const expiringSoon = customers.filter(
+    (c) => daysLeft(c.membershipEnd) <= 5 && daysLeft(c.membershipEnd) >= 0
+  );
+
+  const [rescheduleNotifications, setRescheduleNotifications] = useState([]);
+
+  // Fungsi ambil data dari localStorage
+  const fetchNotifications = () => {
+    const stored = localStorage.getItem("rescheduleNotifications");
+    if (stored) {
+      try {
+        setRescheduleNotifications(JSON.parse(stored));
+      } catch (err) {
+        console.error("Gagal parsing notifikasi:", err);
+      }
+    } else {
+      setRescheduleNotifications([]);
+    }
+  };
+
+  useEffect(() => {
+    fetchNotifications();
+
+    // Event listener: jika ada perubahan di localStorage dari komponen lain (misal admin)
+    const handleStorageChange = (event) => {
+      if (event.key === "rescheduleNotifications") {
+        fetchNotifications();
+      }
+    };
+
+    window.addEventListener("storage", handleStorageChange);
+    return () => window.removeEventListener("storage", handleStorageChange);
+  }, []);
 
   return (
     <div className="p-6 max-w-4xl mx-auto">
@@ -64,39 +96,6 @@ export default function Notifikasi() {
         </div>
       )}
 
-      {/* Membership Hampir Habis */}
-      {expiringSoon.length > 0 && (
-        <div className="mb-6 rounded-xl border-l-4 border-orange-500 bg-orange-50 p-5 shadow">
-          <div className="flex items-center gap-3 mb-3">
-            <CalendarCheck className="text-orange-600" />
-            <h2 className="text-lg font-semibold text-orange-800">⏳ Membership Akan Berakhir</h2>
-          </div>
-          <ul className="list-disc pl-6 text-orange-800">
-            {expiringSoon.map((c, i) => (
-              <li key={i} className="py-1">
-                <span className="font-semibold">{c.name}</span> - sisa {daysLeft(c.membershipEnd)} hari lagi.
-              </li>
-            ))}
-          </ul>
-        </div>
-      )}
-
-      {/* Pelanggan Tidak Aktif */}
-      {inactiveCustomers.length > 0 && (
-        <div className="mb-6 rounded-xl border-l-4 border-red-500 bg-red-50 p-5 shadow">
-          <div className="flex items-center gap-3 mb-3">
-            <AlertCircle className="text-red-600" />
-            <h2 className="text-lg font-semibold text-red-800">📢 Pelanggan Tidak Aktif</h2>
-          </div>
-          <ul className="list-disc pl-6 text-red-800">
-            {inactiveCustomers.map((c, i) => (
-              <li key={i} className="py-1">
-                <span className="font-semibold">{c.name}</span> sudah tidak aktif. Perlu ditindaklanjuti.
-              </li>
-            ))}
-          </ul>
-        </div>
-      )}
 
       {/* Jadwal Kelas Hari Ini */}
       {todayClass.length > 0 && (
@@ -115,7 +114,7 @@ export default function Notifikasi() {
         </div>
       )}
 
-      {/* Pesan dari Admin */}
+      {/* Info & Promo dari Admin */}
       {adminMessages.length > 0 && (
         <div className="mb-6 rounded-xl border-l-4 border-green-500 bg-green-50 p-5 shadow">
           <div className="flex items-center gap-3 mb-3">
@@ -130,11 +129,31 @@ export default function Notifikasi() {
         </div>
       )}
 
-      {/* Tidak ada notifikasi */}
-      {birthdayToday.length === 0 && inactiveCustomers.length === 0 && todayClass.length === 0 && expiringSoon.length === 0 && adminMessages.length === 0 && (
-        <div className="text-gray-600 text-center mt-10 text-lg">
-          Tidak ada notifikasi saat ini. ✅
+      {/* Status Reschedule */}
+      {rescheduleNotifications.length > 0 && (
+        <div className="mb-6 rounded-xl border-l-4 border-indigo-500 bg-indigo-50 p-5 shadow">
+          <div className="flex items-center gap-3 mb-3">
+            <Clock className="text-indigo-600" />
+            <h2 className="text-lg font-semibold text-indigo-800">📆 Status Permintaan Reschedule</h2>
+          </div>
+          <ul className="list-disc pl-6 text-indigo-800">
+            {rescheduleNotifications.map((notif) => (
+              <li key={notif.id} className="py-1">{notif.message}</li>
+            ))}
+          </ul>
         </div>
+      )}
+
+      {/* Tidak ada notifikasi */}
+      {birthdayToday.length === 0 &&
+        inactiveCustomers.length === 0 &&
+        todayClass.length === 0 &&
+        expiringSoon.length === 0 &&
+        adminMessages.length === 0 &&
+        rescheduleNotifications.length === 0 && (
+          <div className="text-gray-600 text-center mt-10 text-lg">
+            Tidak ada notifikasi saat ini. ✅
+          </div>
       )}
     </div>
   );

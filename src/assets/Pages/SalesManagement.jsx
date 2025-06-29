@@ -1,245 +1,209 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
-const dummyCustomers = [
-  { id: 1, name: "Budi Santoso" },
-  { id: 2, name: "Siti Aminah" },
-  { id: 3, name: "Andi Wijaya" },
+const serviceOptions = [
+  { id: 1, name: "Membership Bulanan", price: 250000 },
+  { id: 2, name: "Personal Trainer (4 sesi)", price: 500000 },
+  { id: 3, name: "Produk Suplemen", price: 150000 },
 ];
 
-const initialSales = [
-  {
-    id: 1,
-    invoice: "INV-001",
-    customerId: 1,
-    date: "2025-05-10",
-    total: 1500000,
-    status: "Lunas",
-  },
-  {
-    id: 2,
-    invoice: "INV-002",
-    customerId: 2,
-    date: "2025-05-11",
-    total: 250000,
-    status: "Belum Lunas",
-  },
-];
-
-function formatCurrency(num) {
-  return new Intl.NumberFormat("id-ID", {
-    style: "currency",
-    currency: "IDR",
-  }).format(num);
-}
+const CUSTOMER_STORAGE_KEY = "customerData";
 
 export default function SalesManagement() {
-  const [sales, setSales] = useState(initialSales);
+  const [sales, setSales] = useState([]);
+  const [customers, setCustomers] = useState([]);
   const [showForm, setShowForm] = useState(false);
   const [formData, setFormData] = useState({
-    invoice: "",
+    serviceId: "",
     customerId: "",
     date: "",
-    total: "",
+    quantity: 1,
     status: "Belum Lunas",
   });
 
+  useEffect(() => {
+    const storedSales = localStorage.getItem("gymSales");
+    if (storedSales) setSales(JSON.parse(storedSales));
+
+    const storedCustomers = localStorage.getItem(CUSTOMER_STORAGE_KEY);
+    if (storedCustomers) setCustomers(JSON.parse(storedCustomers));
+  }, []);
+
+  const saveToStorage = (data) => {
+    setSales(data);
+    localStorage.setItem("gymSales", JSON.stringify(data));
+  };
+
+  const formatCurrency = (num) =>
+    new Intl.NumberFormat("id-ID", {
+      style: "currency",
+      currency: "IDR",
+    }).format(num);
+
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setFormData((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
+    setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
   const handleAddSale = () => {
-    if (
-      !formData.invoice ||
-      !formData.customerId ||
-      !formData.date ||
-      !formData.total
-    ) {
-      alert("Semua field wajib diisi!");
-      return;
-    }
+    const service = serviceOptions.find((s) => s.id === Number(formData.serviceId));
+    if (!service || !formData.customerId || !formData.date) return alert("Lengkapi semua field!");
+
     const newSale = {
-      id: sales.length + 1,
-      invoice: formData.invoice,
+      id: Date.now(),
+      serviceId: Number(formData.serviceId),
       customerId: Number(formData.customerId),
       date: formData.date,
-      total: Number(formData.total),
+      quantity: Number(formData.quantity),
       status: formData.status,
+      total: service.price * Number(formData.quantity),
     };
-    setSales([...sales, newSale]);
-    setFormData({
-      invoice: "",
-      customerId: "",
-      date: "",
-      total: "",
-      status: "Belum Lunas",
-    });
+
+    const updated = [...sales, newSale];
+    saveToStorage(updated);
+
+    setFormData({ serviceId: "", customerId: "", date: "", quantity: 1, status: "Belum Lunas" });
     setShowForm(false);
   };
 
   const handleDelete = (id) => {
-    if (window.confirm("Yakin ingin menghapus penjualan ini?")) {
-      setSales(sales.filter((s) => s.id !== id));
+    if (window.confirm("Yakin hapus penjualan ini?")) {
+      const updated = sales.filter((s) => s.id !== id);
+      saveToStorage(updated);
     }
   };
 
-  const getCustomerName = (id) => {
-    const cust = dummyCustomers.find((c) => c.id === id);
-    return cust ? cust.name : "-";
-  };
+  const getServiceName = (id) => serviceOptions.find((s) => s.id === id)?.name || "-";
+  const getCustomerName = (id) => customers.find((c) => c.id === id)?.name || "-";
 
   return (
     <div className="p-6 max-w-5xl mx-auto">
-      <h1 className="text-2xl font-semibold mb-4">Management Penjualan</h1>
+      <h1 className="text-2xl font-bold mb-4 text-indigo-700">📊 Admin - Manajemen Penjualan</h1>
 
       <button
-        onClick={() => setShowForm((prev) => !prev)}
-        className="mb-4 px-4 py-2 bg-indigo-600 text-white rounded hover:bg-indigo-700 transition"
+        onClick={() => setShowForm(!showForm)}
+        className="mb-4 px-4 py-2 bg-indigo-600 text-white rounded hover:bg-indigo-700"
       >
-        {showForm ? "Batal Tambah Penjualan" : "Tambah Penjualan"}
+        {showForm ? "Batal" : "Tambah Penjualan"}
       </button>
 
       {showForm && (
-        <div className="mb-6 p-4 border border-gray-300 rounded shadow-sm bg-white">
-          <div className="mb-2">
-            <label className="block font-medium mb-1">Nomor Invoice</label>
-            <input
-              type="text"
-              name="invoice"
-              value={formData.invoice}
-              onChange={handleInputChange}
-              placeholder="Misal: INV-003"
-              className="w-full px-3 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-indigo-400"
-            />
-          </div>
+        <div className="bg-white p-4 rounded shadow border mb-6">
+          <div className="grid gap-3 md:grid-cols-2">
+            <div>
+              <label className="block font-medium">Layanan</label>
+              <select
+                name="serviceId"
+                value={formData.serviceId}
+                onChange={handleInputChange}
+                className="w-full border px-3 py-2 rounded"
+              >
+                <option value="">-- Pilih Layanan --</option>
+                {serviceOptions.map((s) => (
+                  <option key={s.id} value={s.id}>
+                    {s.name} - {formatCurrency(s.price)}
+                  </option>
+                ))}
+              </select>
+            </div>
 
-          <div className="mb-2">
-            <label className="block font-medium mb-1">Pelanggan</label>
-            <select
-              name="customerId"
-              value={formData.customerId}
-              onChange={handleInputChange}
-              className="w-full px-3 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-indigo-400"
-            >
-              <option value="">-- Pilih Pelanggan --</option>
-              {dummyCustomers.map((c) => (
-                <option key={c.id} value={c.id}>
-                  {c.name}
-                </option>
-              ))}
-            </select>
-          </div>
+            <div>
+              <label className="block font-medium">Pelanggan</label>
+              <select
+                name="customerId"
+                value={formData.customerId}
+                onChange={handleInputChange}
+                className="w-full border px-3 py-2 rounded"
+              >
+                <option value="">-- Pilih Pelanggan --</option>
+                {customers.map((c) => (
+                  <option key={c.id} value={c.id}>{c.name}</option>
+                ))}
+              </select>
+            </div>
 
-          <div className="mb-2">
-            <label className="block font-medium mb-1">Tanggal</label>
-            <input
-              type="date"
-              name="date"
-              value={formData.date}
-              onChange={handleInputChange}
-              className="w-full px-3 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-indigo-400"
-            />
-          </div>
+            <div>
+              <label className="block font-medium">Tanggal</label>
+              <input
+                type="date"
+                name="date"
+                value={formData.date}
+                onChange={handleInputChange}
+                className="w-full border px-3 py-2 rounded"
+              />
+            </div>
 
-          <div className="mb-2">
-            <label className="block font-medium mb-1">Total (Rp)</label>
-            <input
-              type="number"
-              name="total"
-              value={formData.total}
-              onChange={handleInputChange}
-              placeholder="Jumlah total penjualan"
-              className="w-full px-3 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-indigo-400"
-              min="0"
-            />
-          </div>
+            <div>
+              <label className="block font-medium">Jumlah</label>
+              <input
+                type="number"
+                name="quantity"
+                value={formData.quantity}
+                min="1"
+                onChange={handleInputChange}
+                className="w-full border px-3 py-2 rounded"
+              />
+            </div>
 
-          <div className="mb-4">
-            <label className="block font-medium mb-1">Status</label>
-            <select
-              name="status"
-              value={formData.status}
-              onChange={handleInputChange}
-              className="w-full px-3 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-indigo-400"
-            >
-              <option value="Belum Lunas">Belum Lunas</option>
-              <option value="Lunas">Lunas</option>
-              <option value="Batal">Batal</option>
-            </select>
+            <div>
+              <label className="block font-medium">Status</label>
+              <select
+                name="status"
+                value={formData.status}
+                onChange={handleInputChange}
+                className="w-full border px-3 py-2 rounded"
+              >
+                <option value="Lunas">Lunas</option>
+                <option value="Belum Lunas">Belum Lunas</option>
+                <option value="Batal">Batal</option>
+              </select>
+            </div>
           </div>
 
           <button
             onClick={handleAddSale}
-            className="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700 transition"
+            className="mt-4 px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700"
           >
             Simpan
           </button>
         </div>
       )}
 
-      <div className="overflow-x-auto bg-white rounded shadow">
+      <div className="bg-white rounded shadow overflow-x-auto">
         <table className="min-w-full divide-y divide-gray-200">
           <thead className="bg-gray-50">
             <tr>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Invoice
-              </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Pelanggan
-              </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Tanggal
-              </th>
-              <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Total
-              </th>
-              <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Status
-              </th>
-              <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Aksi
-              </th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Layanan</th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Pelanggan</th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Tanggal</th>
+              <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase">Jumlah</th>
+              <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase">Total</th>
+              <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase">Status</th>
+              <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase">Aksi</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-gray-200">
-            {sales.map((sale) => (
-              <tr key={sale.id} className="hover:bg-gray-50">
-                <td className="px-6 py-4 whitespace-nowrap">{sale.invoice}</td>
-                <td className="px-6 py-4 whitespace-nowrap">
-                  {getCustomerName(sale.customerId)}
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap">{sale.date}</td>
-                <td className="px-6 py-4 whitespace-nowrap text-right">
-                  {formatCurrency(sale.total)}
-                </td>
+            {sales.map((s) => (
+              <tr key={s.id} className="hover:bg-gray-50">
+                <td className="px-6 py-4 whitespace-nowrap">{getServiceName(s.serviceId)}</td>
+                <td className="px-6 py-4 whitespace-nowrap">{getCustomerName(s.customerId)}</td>
+                <td className="px-6 py-4 whitespace-nowrap">{s.date}</td>
+                <td className="px-6 py-4 whitespace-nowrap text-center">{s.quantity}</td>
+                <td className="px-6 py-4 whitespace-nowrap text-right">{formatCurrency(s.total)}</td>
                 <td className="px-6 py-4 whitespace-nowrap text-center">
-                  {sale.status === "Lunas" ? (
-                    <span className="inline-flex px-2 text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
-                      Lunas
-                    </span>
-                  ) : sale.status === "Belum Lunas" ? (
-                    <span className="inline-flex px-2 text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">
-                      Belum Lunas
-                    </span>
-                  ) : (
-                    <span className="inline-flex px-2 text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">
-                      Batal
-                    </span>
-                  )}
+                  <span className={`px-2 py-1 text-xs font-semibold rounded-full ${
+                    s.status === "Lunas"
+                      ? "bg-green-100 text-green-700"
+                      : s.status === "Belum Lunas"
+                      ? "bg-yellow-100 text-yellow-700"
+                      : "bg-red-100 text-red-700"
+                  }`}>
+                    {s.status}
+                  </span>
                 </td>
-                <td className="px-6 py-4 whitespace-nowrap text-center space-x-2">
+                <td className="px-6 py-4 text-center">
                   <button
-                    className="text-indigo-600 hover:text-indigo-900 font-semibold"
-                    onClick={() => alert("Fitur Edit belum tersedia")}
-                  >
-                    Edit
-                  </button>
-                  <button
-                    className="text-red-600 hover:text-red-900 font-semibold"
-                    onClick={() => handleDelete(sale.id)}
+                    onClick={() => handleDelete(s.id)}
+                    className="text-red-600 hover:text-red-800 text-sm"
                   >
                     Hapus
                   </button>
@@ -248,8 +212,8 @@ export default function SalesManagement() {
             ))}
             {sales.length === 0 && (
               <tr>
-                <td colSpan={6} className="text-center py-4 text-gray-500">
-                  Tidak ada data penjualan
+                <td colSpan="7" className="text-center py-6 text-gray-500">
+                  Tidak ada data penjualan.
                 </td>
               </tr>
             )}

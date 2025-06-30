@@ -1,27 +1,22 @@
 import React, { useEffect, useState } from "react";
 import { ChevronDown, ChevronUp } from "lucide-react";
+import { supabase } from "../../supabase"; // Pastikan path sesuai
 
 const FaqSection = () => {
   const [openIndex, setOpenIndex] = useState(null);
   const [faqs, setFaqs] = useState([]);
 
-  // Ambil data dari localStorage saat load & saat ada event perubahan
   useEffect(() => {
-    const loadFaqs = () => {
-      const savedFaqs = localStorage.getItem("faqData");
-      if (savedFaqs) {
-        setFaqs(JSON.parse(savedFaqs));
+    const fetchFaqs = async () => {
+      const { data, error } = await supabase.from("faq").select("*").order("created_at", { ascending: false });
+      if (error) {
+        console.error("Gagal mengambil data FAQ:", error.message);
+      } else {
+        setFaqs(data);
       }
     };
 
-    loadFaqs(); // Load awal
-
-    const handleStorage = () => {
-      loadFaqs(); // Update data jika ada perubahan dari admin
-    };
-
-    window.addEventListener("storage", handleStorage);
-    return () => window.removeEventListener("storage", handleStorage);
+    fetchFaqs();
   }, []);
 
   const toggle = (index) => {
@@ -40,7 +35,7 @@ const FaqSection = () => {
         ) : (
           faqs.map((faq, index) => (
             <div
-              key={index}
+              key={faq.id}
               className="mb-6 border-b pb-3 transition-all duration-300"
             >
               <button

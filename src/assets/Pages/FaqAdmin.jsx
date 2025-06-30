@@ -1,55 +1,71 @@
 import React, { useEffect, useState } from "react";
+import { supabase } from "../../supabase"; // pastikan path sesuai
 
 const FaqAdmin = () => {
   const [faqs, setFaqs] = useState([]);
   const [form, setForm] = useState({ question: "", answer: "" });
-  const [editIndex, setEditIndex] = useState(null);
+  const [editId, setEditId] = useState(null);
 
-  // Load dari localStorage saat pertama kali
+  // Load FAQ dari Supabase saat komponen pertama kali dimount
   useEffect(() => {
-    const savedFaqs = localStorage.getItem("faqData");
-    if (savedFaqs) {
-      setFaqs(JSON.parse(savedFaqs));
-    }
+    fetchFaqs();
   }, []);
 
-  const saveToStorage = (data) => {
-    localStorage.setItem("faqData", JSON.stringify(data));
-    window.dispatchEvent(new Event("storage")); // Notify halaman lain
+  const fetchFaqs = async () => {
+    const { data, error } = await supabase.from("faq").select("*").order("created_at", { ascending: false });
+    if (error) {
+      console.error("Gagal mengambil data FAQ:", error.message);
+    } else {
+      setFaqs(data);
+    }
   };
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  const handleAdd = () => {
+  const handleAddOrEdit = async () => {
     if (!form.question || !form.answer) return;
 
-    let updatedFaqs;
-    if (editIndex !== null) {
-      updatedFaqs = [...faqs];
-      updatedFaqs[editIndex] = { ...form };
-      setEditIndex(null);
+    if (editId) {
+      const { error } = await supabase
+        .from("faq")
+        .update({ question: form.question, answer: form.answer })
+        .eq("id", editId);
+
+      if (error) {
+        alert("Gagal mengupdate FAQ");
+      }
     } else {
-      updatedFaqs = [...faqs, form];
+      const { error } = await supabase
+        .from("faq")
+        .insert([{ question: form.question, answer: form.answer }]);
+
+      if (error) {
+        alert("Gagal menambah FAQ");
+      }
     }
 
-    setFaqs(updatedFaqs);
-    saveToStorage(updatedFaqs);
     setForm({ question: "", answer: "" });
+    setEditId(null);
+    fetchFaqs();
   };
 
-  const handleEdit = (index) => {
-    setForm(faqs[index]);
-    setEditIndex(index);
+  const handleEdit = (faq) => {
+    setForm({ question: faq.question, answer: faq.answer });
+    setEditId(faq.id);
   };
 
-  const handleDelete = (index) => {
-    const updatedFaqs = faqs.filter((_, i) => i !== index);
-    setFaqs(updatedFaqs);
-    saveToStorage(updatedFaqs);
-    setForm({ question: "", answer: "" });
-    setEditIndex(null);
+  const handleDelete = async (id) => {
+    const confirm = window.confirm("Apakah kamu yakin ingin menghapus FAQ ini?");
+    if (!confirm) return;
+
+    const { error } = await supabase.from("faq").delete().eq("id", id);
+    if (error) {
+      alert("Gagal menghapus FAQ");
+    } else {
+      fetchFaqs();
+    }
   };
 
   return (
@@ -73,10 +89,10 @@ const FaqAdmin = () => {
           className="w-full p-2 border border-gray-300 rounded"
         />
         <button
-          onClick={handleAdd}
+          onClick={handleAddOrEdit}
           className="bg-purple-600 text-white px-4 py-2 rounded hover:bg-purple-700"
         >
-          {editIndex !== null ? "Simpan Perubahan" : "Tambah FAQ"}
+          {editId ? "Simpan Perubahan" : "Tambah FAQ"}
         </button>
       </div>
 
@@ -85,19 +101,19 @@ const FaqAdmin = () => {
         <p className="text-gray-500 italic">Belum ada data FAQ.</p>
       ) : (
         <ul className="space-y-4">
-          {faqs.map((faq, index) => (
-            <li key={index} className="border p-4 rounded shadow-sm">
+          {faqs.map((faq) => (
+            <li key={faq.id} className="border p-4 rounded shadow-sm">
               <p className="font-semibold">{faq.question}</p>
               <p className="text-sm text-gray-600 mt-1">{faq.answer}</p>
               <div className="flex space-x-2 mt-2">
                 <button
-                  onClick={() => handleEdit(index)}
+                  onClick={() => handleEdit(faq)}
                   className="text-blue-600 hover:underline text-sm"
                 >
                   Edit
                 </button>
                 <button
-                  onClick={() => handleDelete(index)}
+                  onClick={() => handleDelete(faq.id)}
                   className="text-red-600 hover:underline text-sm"
                 >
                   Hapus

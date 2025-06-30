@@ -107,7 +107,7 @@ export default function LoginPage() {
           Belum punya akun?{" "}
           <span
             className="text-white hover:underline cursor-pointer font-semibold"
-            onClick={() => navigate("/register")}
+            onClick={() => navigate("/pendaftaran")}
           >
             Daftar Sekarang
           </span>

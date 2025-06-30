@@ -12,6 +12,7 @@ import {
   Legend,
 } from "chart.js";
 import { Bar, Line, Pie } from "react-chartjs-2";
+import { supabase } from "../../supabase"; // sesuaikan path
 
 ChartJS.register(
   CategoryScale,
@@ -28,28 +29,20 @@ ChartJS.register(
 const Dashboard = () => {
   const [customers, setCustomers] = useState([]);
   const [sales, setSales] = useState([]);
+  const [layanan, setLayanan] = useState([]);
 
   useEffect(() => {
-    const storedCustomers = localStorage.getItem("customerData");
-    const storedSales = localStorage.getItem("gymSales");
-    if (storedCustomers) setCustomers(JSON.parse(storedCustomers));
-    if (storedSales) setSales(JSON.parse(storedSales));
+    fetchData();
   }, []);
 
-  const totalRevenue = sales.reduce((sum, s) => sum + s.total, 0);
-  const monthlySales = Array(12).fill(0);
-  const monthlyCustomers = Array(12).fill(0);
-  const currentMonth = new Date().getMonth();
-
-  sales.forEach((s) => {
-    const month = new Date(s.date).getMonth();
-    monthlySales[month] += s.total / 1000;
-  });
-
-  customers.forEach((c) => {
-    const month = new Date(c.birthday).getMonth();
-    monthlyCustomers[month]++;
-  });
+  const fetchData = async () => {
+    const { data: pelangganData } = await supabase.from("pelanggan").select("*");
+    const { data: penjualanData } = await supabase.from("penjualan").select("*");
+    const { data: layananData } = await supabase.from("layanan").select("*");
+    setCustomers(pelangganData || []);
+    setSales(penjualanData || []);
+    setLayanan(layananData || []);
+  };
 
   const formatCurrency = (num) =>
     new Intl.NumberFormat("id-ID", {
@@ -57,28 +50,45 @@ const Dashboard = () => {
       currency: "IDR",
     }).format(num);
 
-  // === PIE CHART FIXED ===
+  const totalRevenue = sales
+    .filter((s) => s.status === "Lunas")
+    .reduce((sum, s) => {
+      const found = layanan.find((l) => l.id === s.layanan_id);
+      return sum + (found ? found.harga * s.jumlah : 0);
+    }, 0);
+
+  const monthlySales = Array(12).fill(0);
+  const monthlyCustomers = Array(12).fill(0);
+  const currentMonth = new Date().getMonth();
+
+  sales.forEach((s) => {
+    if (s.status === "Lunas") {
+      const month = new Date(s.tanggal).getMonth();
+      const found = layanan.find((l) => l.id === s.layanan_id);
+      monthlySales[month] += found ? (found.harga * s.jumlah) / 1000 : 0;
+    }
+  });
+
+  customers.forEach((c) => {
+    const month = new Date(c.tanggal_bergabung).getMonth();
+    monthlyCustomers[month]++;
+  });
+
   const salesThisMonth = sales.filter(
-    (s) => new Date(s.date).getMonth() === currentMonth
+    (s) => new Date(s.tanggal).getMonth() === currentMonth && s.status === "Lunas"
   );
 
   const serviceTotals = {};
   salesThisMonth.forEach((s) => {
-    const service = s.serviceId;
-    if (!serviceTotals[service]) serviceTotals[service] = 0;
-    serviceTotals[service] += s.total;
+    const found = layanan.find((l) => l.id === s.layanan_id);
+    if (found) {
+      if (!serviceTotals[found.nama]) serviceTotals[found.nama] = 0;
+      serviceTotals[found.nama] += found.harga * s.jumlah;
+    }
   });
 
-  const serviceNames = {
-    1: "Membership Bulanan",
-    2: "Personal Trainer",
-    3: "Produk Suplemen",
-  };
-
   const pieData = {
-    labels: Object.keys(serviceTotals).map(
-      (id) => serviceNames[Number(id)] || "Layanan Lain"
-    ),
+    labels: Object.keys(serviceTotals),
     datasets: [
       {
         data: Object.values(serviceTotals),
